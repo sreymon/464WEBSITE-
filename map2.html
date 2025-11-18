@@ -89,7 +89,6 @@
 
   // GeoJSON list for single URLs
   var geojsonFiles = [
-    { name: "Ontario Wilderness Areas", url: "https://raw.githubusercontent.com/sreymon/464WEBSITE1/refs/heads/main/wilderness_areas_final_last.geojson", color: "green" },
     { name: "Manitoba", url: "https://raw.githubusercontent.com/sreymon/464WEBSITE1/refs/heads/main/Manitoba_Parks_Filtered_final.geojson", color: "purple" },
     { name: "Saskatchewan", url: "https://raw.githubusercontent.com/sreymon/464WEBSITE1/refs/heads/main/Saskatchewan_Parks_Modified_renamed_final_last.geojson", color: "orange" }
   ];
@@ -182,6 +181,32 @@
     window.layerControl.addOverlay(peiLayer, "Prince Edward Island");
   }
 
+var OntarioFiles = [
+    "https://raw.githubusercontent.com/sreymon/464WEBSITE1/refs/heads/main/wilderness_areas_final_last.geojson",
+    "https://raw.githubusercontent.com/sreymon/464WEBSITE1/refs/heads/main/protected_areas_far_north_final.geojson"
+  ];
+
+  var OntarioLayer = L.layerGroup();
+
+  OntarioFiles.forEach(url => {
+    fetch(url)
+      .then(res => res.json())
+      .then(data => {
+        var layer = L.geoJSON(data, {
+          style: { color: "green", weight: 2, fillOpacity: 0.3 },
+          onEachFeature: attachEvents
+        });
+        OntarioLayer.addLayer(layer);
+      })
+      .catch(err => console.error("Error loading Ontario GeoJSON:", url, err));
+  });
+
+  overlayLayers["Ontario"] = OntarioLayer;
+
+  if (window.layerControl) {
+    window.layerControl.addOverlay(OntarioLayer, "Ontario");
+  }
+    
   // Click popup
   map.on('click', function (e) {
     L.popup()
