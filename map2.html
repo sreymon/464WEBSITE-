@@ -91,8 +91,7 @@
   var geojsonFiles = [
     { name: "Ontario Wilderness Areas", url: "https://raw.githubusercontent.com/sreymon/464WEBSITE1/refs/heads/main/wilderness_areas_final_last.geojson", color: "green" },
     { name: "Manitoba", url: "https://raw.githubusercontent.com/sreymon/464WEBSITE1/refs/heads/main/Manitoba_Parks_Filtered_final.geojson", color: "purple" },
-    { name: "Saskatchewan", url: "https://raw.githubusercontent.com/sreymon/464WEBSITE1/refs/heads/main/Saskatchewan_Parks_Modified_renamed_final_last.geojson", color: "orange" },
-    { name: "Prince Edward Island Provincial Parks", url: "https://raw.githubusercontent.com/sreymon/464WEBSITE1/refs/heads/main/pei_prov_parks_finaL_last.geojson", color: "red"}
+    { name: "Saskatchewan", url: "https://raw.githubusercontent.com/sreymon/464WEBSITE1/refs/heads/main/Saskatchewan_Parks_Modified_renamed_final_last.geojson", color: "orange" }
   ];
 
   var overlayLayers = {};
@@ -153,6 +152,34 @@
   // Add Quebec layer to layer control after it's created
   if (window.layerControl) {
     window.layerControl.addOverlay(quebecLayer, "Quebec");
+  }
+
+  var peiFiles = [
+    "https://raw.githubusercontent.com/sreymon/464WEBSITE1/refs/heads/main/PROV_PARK_REGULATED_final_last_last_part1.geojson",
+    "https://raw.githubusercontent.com/sreymon/464WEBSITE1/refs/heads/main/PROV_PARK_REGULATED_final_last_last_part2.geojson",
+    "https://raw.githubusercontent.com/sreymon/464WEBSITE1/refs/heads/main/PROV_PARK_REGULATED_final_last_last_part3.geojson",
+    "https://raw.githubusercontent.com/sreymon/464WEBSITE1/refs/heads/main/pei_prov_parks_finaL_last.geojson"
+  ];
+
+  var peiLayer = L.layerGroup();
+
+  peiFiles.forEach(url => {
+    fetch(url)
+      .then(res => res.json())
+      .then(data => {
+        var layer = L.geoJSON(data, {
+          style: { color: "red", weight: 2, fillOpacity: 0.3 },
+          onEachFeature: attachEvents
+        });
+        peiLayer.addLayer(layer);
+      })
+      .catch(err => console.error("Error loading pei GeoJSON:", url, err));
+  });
+
+  overlayLayers["Prince Edward Island"] = peiLayer;
+
+  if (window.layerControl) {
+    window.layerControl.addOverlay(peiLayer, "Prince Edward Island");
   }
 
   // Click popup
