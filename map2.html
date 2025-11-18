@@ -206,7 +206,33 @@ var OntarioFiles = [
   if (window.layerControl) {
     window.layerControl.addOverlay(OntarioLayer, "Ontario");
   }
-    
+
+  var NovaScotiaFiles = [
+    "https://raw.githubusercontent.com/sreymon/464WEBSITE1/refs/heads/main/ns_provincial_parks_final.geojson"
+  ];
+
+  var NovaScotiaLayer = L.layerGroup();
+
+  NovaScotiaFiles.forEach(url => {
+    fetch(url)
+      .then(res => res.json())
+      .then(data => {
+        var layer = L.geoJSON(data, {
+          style: { color: "pink", weight: 2, fillOpacity: 0.3 },
+          onEachFeature: attachEvents
+        });
+        NovaScotiaLayer.addLayer(layer);
+      })
+      .catch(err => console.error("Error loading NovaScotia GeoJSON:", url, err));
+  });
+
+  
+  overlayLayers["Nova Scotia"] = NovaScotiaLayer;
+
+  if (window.layerControl) {
+    window.layerControl.addOverlay(NovaScotiaLayer, "Nova Scotia");
+  }
+  
   // Click popup
   map.on('click', function (e) {
     L.popup()
