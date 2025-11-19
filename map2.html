@@ -235,7 +235,32 @@ var OntarioFiles = [
   if (window.layerControl) {
     window.layerControl.addOverlay(NovaScotiaLayer, "Nova Scotia");
   }
-  
+
+  var NBFiles = [
+    "https://raw.githubusercontent.com/sreymon/464WEBSITE1/refs/heads/main/nb_prov_parks_final.geojson"
+  ];
+
+  var NBLayer = L.layerGroup();
+
+  NBFiles.forEach(url => {
+    fetch(url)
+      .then(res => res.json())
+      .then(data => {
+        var layer = L.geoJSON(data, {
+          style: { color: "blue", weight: 2, fillOpacity: 0.3 },
+          onEachFeature: attachEvents
+        });
+        NBLayer.addLayer(layer);
+      })
+      .catch(err => console.error("Error loading New Bruinswick GeoJSON:", url, err));
+  });
+
+  overlayLayers["New Bruinswick"] = NBLayer;
+
+  if (window.layerControl) {
+    window.layerControl.addOverlay(NBLayer, "New Bruinswickc");
+  }
+    
   // Click popup
   map.on('click', function (e) {
     L.popup()
