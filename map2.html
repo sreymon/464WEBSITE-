@@ -258,7 +258,32 @@ var OntarioFiles = [
   overlayLayers["New Bruinswick"] = NBLayer;
 
   if (window.layerControl) {
-    window.layerControl.addOverlay(NBLayer, "New Bruinswickc");
+    window.layerControl.addOverlay(NBLayer, "New Bruinswick");
+  }
+
+    var natparksFiles = [
+    "https://raw.githubusercontent.com/sreymon/464WEBSITE1/refs/heads/main/final_merged_gdf.geojson"
+  ];
+
+  var natparksLayer = L.layerGroup();
+
+  natparksFiles.forEach(url => {
+    fetch(url)
+      .then(res => res.json())
+      .then(data => {
+        var layer = L.geoJSON(data, {
+          style: { color: "brown", weight: 2, fillOpacity: 0.3 },
+          onEachFeature: attachEvents
+        });
+        natparksLayer.addLayer(layer);
+      })
+      .catch(err => console.error("Error loading National Parks GeoJSON:", url, err));
+  });
+
+  overlayLayers["National Parks"] = natparksLayer;
+
+  if (window.layerControl) {
+    window.layerControl.addOverlay(natparksLayer, "National Parks");
   }
     
   // Click popup
