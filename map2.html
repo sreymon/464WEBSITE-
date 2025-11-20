@@ -67,7 +67,16 @@
     // ------------------------------------------------------------
     // Initialize map
     // ------------------------------------------------------------
-    var map = L.map('map').setView([69.4267, -88.5938], 2.5);
+    var map = L.map('map', {
+    minZoom: 3,   // prevents zooming too far out
+    maxZoom: 18,  // optional
+    maxBounds: [
+        [85, -170],   // north-west corner (top-left of Canada region)
+        [40, -40]     // south-east corner (bottom-right of Canada region)
+    ],
+    maxBoundsViscosity: 0.7  // adds smooth snap-back effect
+    }).setView([69.4267, -88.5938], 3);  // adjusted zoom to match minZoom
+
 
     var street = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '© OpenStreetMap contributors'
