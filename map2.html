@@ -85,32 +85,39 @@
     // ------------------------------------------------------------
     // Hover + tooltip handler
     // ------------------------------------------------------------
-    function attachEvents(feature, layer) {
-      let tooltipContent = "";
+function attachEvents(feature, layer) {
+  // Build tooltip
+  let tooltipContent = "";
+  for (const key in feature.properties) {
+    tooltipContent += `<strong>${key}</strong>: ${feature.properties[key]}<br>`;
+  }
+  layer.bindTooltip(tooltipContent, { sticky: true });
 
-      for (const key in feature.properties) {
-        tooltipContent += `<strong>${key}</strong>: ${feature.properties[key]}<br>`;
-      }
+  // Save original style (safe for all geometry types)
+  const originalStyle = {
+    color: layer.options.color || "#3388ff",
+    weight: layer.options.weight || 2,
+    fillOpacity: layer.options.fillOpacity || 0.3
+  };
 
-      layer.bindTooltip(tooltipContent, { sticky: true });
-
-      layer.on({
-        mouseover: function (e) {
-          e.target.setStyle({
-            color: 'yellow',
-            weight: 3,
-            fillOpacity: 0.6
-          });
-        },
-        mouseout: function (e) {
-          e.target.setStyle({
-            color: layer.options.color,
-            weight: 2,
-            fillOpacity: 0.3
-          });
-        }
+  layer.on({
+    mouseover: function (e) {
+      e.target.setStyle({
+        color: 'yellow',
+        weight: 3,
+        fillOpacity: 0.6
       });
+      // Bring to front for visual clarity
+      if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
+        e.target.bringToFront();
+      }
+    },
+    mouseout: function (e) {
+      e.target.setStyle(originalStyle);
     }
+  });
+}
+
 
     // ------------------------------------------------------------
     // Single URL GeoJSON Layers
