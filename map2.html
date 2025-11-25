@@ -122,6 +122,38 @@ function attachEvents(feature, layer) {
 
 
     // ------------------------------------------------------------
+    // BC
+    // ------------------------------------------------------------
+    var bcFiles = [
+      "https://raw.githubusercontent.com/sreymon/464WEBSITE1/refs/heads/main/MAdministrativeBANFF_FeaturesToJSO.geojson"
+    ];
+    
+    var bcColors = ["green"];  
+    
+    var bcLayer = L.layerGroup();
+    
+    bcFiles.forEach((url, index) => {
+      fetch(url)
+        .then(res => res.json())
+        .then(data => {
+          var layer = L.geoJSON(data, {
+            style: {
+              color: bcColors[index],   // <-- Different color per file
+              weight: 2,
+              fillOpacity: 0.3
+            },
+            onEachFeature: attachEvents
+          });
+    
+          bcLayer.addLayer(layer);
+        })
+        .catch(err => console.error("Error loading British Columbia GeoJSON:", url, err));
+    });
+    
+    overlayLayers["British Columbia"] = bcLayer;
+    if (window.layerControl) window.layerControl.addOverlay(bcLayer, "British Columbia");
+    
+    // ------------------------------------------------------------
     // Nunavut
     // ------------------------------------------------------------
     var nuFiles = [
@@ -236,11 +268,13 @@ function attachEvents(feature, layer) {
       "https://raw.githubusercontent.com/sreymon/464WEBSITE1/refs/heads/main/Wildlife_Refuge.geojson",
       "https://raw.githubusercontent.com/sreymon/464WEBSITE1/refs/heads/main/Threatened_or.geojson",
       "https://raw.githubusercontent.com/sreymon/464WEBSITE1/refs/heads/main/deliminated.geojson",
-      "https://raw.githubusercontent.com/sreymon/464WEBSITE1/refs/heads/main/Voluntarily_Conserved.geojson"
+      "https://raw.githubusercontent.com/sreymon/464WEBSITE1/refs/heads/main/Voluntarily_Conserved.geojson",
+      "https://raw.githubusercontent.com/sreymon/464WEBSITE1/refs/heads/main/AdministrativeFORILLION_FeaturesToJSO.geojson",
+      "https://raw.githubusercontent.com/sreymon/464WEBSITE1/refs/heads/main/AdministrativeMINGAN_FeaturesToJSO.geojson"
     ];
 
 // Assign a color for each file (in the same order)
-    var quebecColors = ["orange", "orange", "orange", "orange", "pink", "pink", "pink", "pink", "blue", "green", "red", "red", "red", "red", "red"];  
+    var quebecColors = ["orange", "orange", "orange", "orange", "pink", "pink", "pink", "pink", "blue", "green", "red", "red", "red", "red", "red", "green", "green"];  
     
     var quebecLayer = L.layerGroup();
     
@@ -339,10 +373,12 @@ function attachEvents(feature, layer) {
       "https://raw.githubusercontent.com/sreymon/464WEBSITE1/refs/heads/main/PROV_PARK_REGULATED_final_last_last_part1.geojson",
       "https://raw.githubusercontent.com/sreymon/464WEBSITE1/refs/heads/main/PROV_PARK_REGULATED_final_last_last_part2.geojson",
       "https://raw.githubusercontent.com/sreymon/464WEBSITE1/refs/heads/main/PROV_PARK_REGULATED_final_last_last_part3.geojson",
-      "https://raw.githubusercontent.com/sreymon/464WEBSITE1/refs/heads/main/protected_areas_far_north_final.geojson"
+      "https://raw.githubusercontent.com/sreymon/464WEBSITE1/refs/heads/main/protected_areas_far_north_final.geojson",
+      "https://raw.githubusercontent.com/sreymon/464WEBSITE1/refs/heads/main/AdministrativeF5_FeaturesToJSO.geojson",
+      "https://raw.githubusercontent.com/sreymon/464WEBSITE1/refs/heads/main/AdministrativeROUGE_FeaturesToJSO.geojson"
     ];
     
-    var ontarioColors = ["red", "light green", "light green", "light green", "red"];  
+    var ontarioColors = ["red", "light green", "light green", "light green", "red", "green", "green"];  
     
     var ontarioLayer = L.layerGroup();
     
