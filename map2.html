@@ -54,9 +54,9 @@
       <div class="color-legend" style="text-align: left;">
         <h2>Color Meanings</h2>
         <ul style="list-style:none; padding:0;">
-          <li><span style="color:red; font-weight:bold;">Red</span> = Land areas</li>
-          <li><span style="color:blue; font-weight:bold;">Blue</span> = Birds</li>
-          <li><span style="color:green; font-weight:bold;">Green</span> = Natural Parks</li>
+          <li><span style="color:red; font-weight:bold;">Red</span> = Multi-Land Use Areas</li>
+          <li><span style="color:blue; font-weight:bold;">Blue</span> = Bird Sanctuaries</li>
+          <li><span style="color:green; font-weight:bold;">Green</span> = National Parks</li>
           <li><span style="color:lightgreen; font-weight:bold;">lightgreen</span> = Provincial Parks</li>
         </ul>
       </div>
@@ -175,10 +175,11 @@ function attachEvents(feature, layer) {
     // Yukon
     // ------------------------------------------------------------
     var ykFiles = [
-      "https://raw.githubusercontent.com/sreymon/464WEBSITE1/refs/heads/main/vuntutnatpark_FeaturesToJSON.geojson"
+      "https://raw.githubusercontent.com/sreymon/464WEBSITE1/refs/heads/main/vuntutnatpark_FeaturesToJSON.geojson",
+      "https://raw.githubusercontent.com/sreymon/464WEBSITE1/refs/heads/main/YK_natparks_FeaturesToJSON.geojson"
     ];
     
-    var ykColors = ["green"];  
+    var ykColors = ["green", "green"];  
     
     var ykLayer = L.layerGroup();
     
