@@ -161,6 +161,38 @@ function attachEvents(feature, layer) {
 
   overlayLayers["British Columbia"] = bcLayer;
   layerControl.addOverlay(bcLayer, "British Columbia");
+
+    // ------------------------------------------------------------
+    // Yukon
+    // ------------------------------------------------------------
+    var ykFiles = [
+      "https://raw.githubusercontent.com/sreymon/464WEBSITE1/refs/heads/main/vuntutnatpark_FeaturesToJSON.geojson"
+    ];
+    
+    var ykColors = ["green"];  
+    
+    var ykLayer = L.layerGroup();
+    
+    ykFiles.forEach((url, index) => {
+      fetch(url)
+        .then(res => res.json())
+        .then(data => {
+          var layer = L.geoJSON(data, {
+            style: {
+              color: ykColors[index],   // <-- Different color per file
+              weight: 2,
+              fillOpacity: 0.3
+            },
+            onEachFeature: attachEvents
+          });
+    
+          ykLayer.addLayer(layer);
+        })
+        .catch(err => console.error("Error loading Yukon GeoJSON:", url, err));
+    });
+    
+    overlayLayers["Yukon"] = ykLayer;
+    if (window.layerControl) window.layerControl.addOverlay(ykLayer, "Yukon");
     
     // ------------------------------------------------------------
     // Nunavut
